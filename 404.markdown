@@ -1,0 +1,6 @@
+---
+layout: post
+title: "404: Page not found!"
+hide_meta: true
+---
+The page you're looking is lost.  Sorry about that.

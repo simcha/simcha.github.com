@@ -1,0 +1,16 @@
+.s1, .s2, .sx, .mi {
+  color: rgb(154, 176, 235);
+}
+
+.nb, .k, .o {
+  color: #CCE1aa;
+}
+
+.ss {
+  color: rgb(255, 207, 135);
+}
+
+.vi {
+  color: rgb(255, 129, 137);
+}
+

@@ -1,0 +1,6 @@
+destination: ./_site
+auto:        true
+lsi:         false
+pygments:    true
+permalink:   /:year/:month/:title
+exclude: [config, CNAME, Rakefile, Capfile, _site.tar.gz, mappum]

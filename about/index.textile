@@ -1,0 +1,6 @@
+---
+layout: post
+title: About me, Jan Topinski
+hide_meta: true
+---
+Hi I'm Jan Topinski I work and live in Warsaw Poland. I work for "Infovide Matrix":http://www.ivmx.pl

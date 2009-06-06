@@ -1,0 +1,8 @@
+---
+layout: default
+title: recent posts
+---
+{% for page in site.posts %}
+{% assign body = page.content %}
+{% include post-div.html %}
+{% endfor %}

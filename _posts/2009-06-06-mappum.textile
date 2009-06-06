@@ -1,0 +1,70 @@
+---
+layout: post
+title: Mappum structures mapping DSL
+categories: [mappum]
+---
+
+I created this blog to share my ideas on software. The newest idea im working on is "Mappum":http://wiki.github.com/simcha/mappum. Basically the idea is to create a tool for easy structure to structure mapping. What is mapping you know it's nothing special, just coping values from one structure to the other. If you do it ones anything will do. When programing all of us use simple "=" and few if-not-nulls and make this "mappings"
+whit no hassle. So where is the point. Can you imagine that you do *only* mappings, no .. lucky you. Mapping is what Enterprise Integration is really about. Maybe not 100% but plenty. 
+
+When doing many, many mappings you start to see limitation of the "=" and few if-not-nulls approach. First limitation is that you need to write your code twice map Client >> Person and then Client << Person. And 95% of times one is the opposite of the other but ones left is:
+
+{% highlight java %}
+person_address = person.getAddress()
+if (person_address != null) {
+  client.getAddress().setStreet(person_address.getStreetName())
+}
+{% endhighlight %}	
+
+where the right hand side is:
+
+{% highlight java %}
+client_address = client.getAddress()
+if (client_address != null) {
+  person.getAddress().setStreetName(client_address.getStreet())
+}
+{% endhighlight %}
+
+Not a big difference mind you. But the difference is there and we can't do anything about it. The second thing is what to do, to actually document the thing. The code is simple but throw in couple of iterations over some lists and some date conversions here and there and your done. Anyhow the code is not something that our clients like to read and write when they do the analyse part of a job with us.
+
+So looking for the solutions I found "Dozer":http://dozer.sourceforge.net/. It has many advantages:
+
+* It's stable, actually in version 5 as of time of writing this article,
+* It supports bidirectional mappings,
+* It's fast enough.
+
+The above mapping in dozer would look like this.
+
+{% highlight xml %}
+  <mapping>
+    <class-a>org.test.crm.Client.Address</class-a>
+    <class-b>org.test.erp.Address</class-b>
+       <field>
+        <A>streetName</A>
+        <B>street</B>
+      </field>
+  </mapping>
+{% endhighlight %}
+
+So ... it's language of choice for the mappings is XML. I have nothing against XML as document mark-up language but as programing language it has many disadvantages. But to cut it right here lets say it`s personal, I don't like XML as programing language.
+
+So out of real need and personal problem with XML I decided to try new path and create Ruby DSL (Domain Specific Language) to handle structure mapping. I choose DSL cause I believe that mapping is overly complicated in some corner cases and having full blown language to solve that is crucial to the success of a tool. The language is build around an idea of map. Maps bind or map two structures or elements of structures one to another. Let as see the example. 
+
+{% highlight ruby %}
+map client.address <=> person.address do |client_address, person_address|
+  map person_address.street_name <=> client_address.street
+end
+{% endhighlight %}
+
+As you can see in the above example maps can be nested. Maps can be bidirectional and unidirectional. Where unidirectional can have Ruby code as argument. This way our language is not less powerful then ruby in solving corner cases. But having declarative syntax give us opportunity to generate interesting things out of defined maps. For now we generate map definition for translation engines. We build two such engines one for Ruby objects and one for XML documents. Second thin we generate is documentation html page with graph describing the mapping. Screenshot of such page can be found "here":http://wiki.github.com/simcha/mappum/screenshots. Simple graph for the above map will be:
+
+!http://simcha.github.com/mappum/screenshots/1-blog-post-map.png!
+
+So what we have now is a working mapping engine with little http server. My friend Andrzej Derlacki just finished "ServiceMix":http://servicemix.apache.org service engine (not jet on the web). Hi also works on the "Mule":http://www.mulesource.com/ plugin. Mapping language has many "features":http://wiki.github.com/simcha/mappum/syntax it needs to have like dictionary mapping or lists handling. But we steel lack some important ones:
+
+* Multiple structures map, now we are limited to one-one mapping,
+* Constant mapping (now one need to return constant value from unidirectional map).
+
+And probably the most important thing for many of us GUI editor. Other collogue from "IVMX":http://www.ivmx.pl Adam Dąbrowski is working on that. When it's done we can start using Mappum as a part of analytic process. Of course all the tools I am writing about are or will be open source. So we all hope some of you will try it, maybe use it, throw a bug report or a fix from time to time. As you see projects are at github where it's easy to play with a source. As of time of writing this post Mappum is very new and can dramatically change so let us now if you will to seriously use it on production. And maybe some day when it's mature enough we can ask people at Dozer to add Mappum as other way to define maps there. 
+
+
