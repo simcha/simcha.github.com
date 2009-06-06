@@ -52,7 +52,7 @@ So out of real need and personal problem with XML I decided to try new path and 
 
 {% highlight ruby %}
 map client.address <=> person.address do |client_address, person_address|
-  map person_address.street_name <=> client_address.street
+  map client_address.street <=> person_address.street_name
 end
 {% endhighlight %}
 
@@ -60,7 +60,7 @@ As you can see in the above example maps can be nested. Maps can be bidirectiona
 
 !http://simcha.github.com/mappum/screenshots/1-blog-post-map.png!
 
-So what we have now is a working mapping engine with little http server. My friend Andrzej Derlacki just finished "ServiceMix":http://servicemix.apache.org service engine (not jet on the web). Hi also works on the "Mule":http://www.mulesource.com/ plugin. Mapping language has many "features":http://wiki.github.com/simcha/mappum/syntax it needs to have like dictionary mapping or lists handling. But we steel lack some important ones:
+So what we have now is a working mapping engine with little http server. My friend Andrzej Derlacki just finished "ServiceMix":http://servicemix.apache.org service engine (not jet on the web). Hi also works on the "Mule":http://www.mulesource.com/ plugin. Mapping language has many "features":http://wiki.github.com/simcha/mappum/syntax it needs to have, like: dictionary mapping or lists handling. But we steel lack some important ones:
 
 * Multiple structures map, now we are limited to one-one mapping,
 * Constant mapping (now one need to return constant value from unidirectional map).
